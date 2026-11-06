@@ -1,0 +1,14 @@
+# Core Stage 1 Forensic Framework Dependencies
+django>=5.1.0,<7.0.0
+watchdog>=5.0.0
+pywin32>=308
+python-dotenv>=1.0.1
+pyyaml>=6.0.2
+
+# Packet Analysis (Offline PCAP / PCAPNG parsing)
+dpkt>=1.9.8
+scapy>=2.6.0
+
+# Testing Framework
+pytest>=8.3.0
+pytest-django>=4.9.0

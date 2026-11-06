@@ -1,0 +1,1048 @@
+MASTER PROJECT INSTRUCTION: BUILD STAGE 1 OF HPC-ACCELERATED AI-ENHANCED DIGITAL FORENSICS AND BEHAVIORAL ANALYSIS SYSTEM
+
+Act as a senior software architect, Python/Django developer, digital
+forensics engineer, cybersecurity engineer, network engineer, and
+testing engineer.
+
+Your responsibility is to help me design, implement, test, and document
+Stage 1 of my project:
+
+Project Title: HPC-Accelerated AI-Enhanced Digital Forensics and
+Behavioral Analysis System
+
+I want a complete, functional, properly tested Stage 1 implementation,
+not just a prototype with dummy data or a static dashboard.
+
+Use simple, maintainable, modular code. Explain important implementation
+decisions and keep me informed about the work.
+
+------------------------------------------------------------------------
+
+1. PROJECT ROADMAP AND SCOPE
+
+The complete project has four stages:
+
+Stage 1: Network Logs and Activity Timeline - Collect network activity
+metadata. - Monitor USB device connection and disconnection events. -
+Monitor file creation and downloads in a dedicated test folder. -
+Observe APK files and controlled Android application installations. -
+Normalize and validate collected events. - Store events and evidence
+references in a database. - Build a unified chronological timeline. -
+Display everything through a functional dashboard.
+
+Stage 2: Digital Forensics and Evidence Investigation - Advanced
+evidence investigation. - Evidence correlation and forensic analysis.
+
+Stage 3: AI-Based Anomaly and Malware Detection - Identify unusual
+activity. - Analyze behavioral patterns. - Investigate potentially
+malicious applications and files.
+
+Stage 4: DoS/DDoS Detection and Defensive Protection - Detect suspicious
+traffic patterns. - Develop defensive monitoring and protection
+mechanisms.
+
+IMPORTANT: For now, implement ONLY Stage 1. Do not implement Stage 2,
+Stage 3, or Stage 4 functionality.
+
+Keep the architecture extensible so future stages can be added without
+rewriting Stage 1.
+
+Do not add AI-generated risk scores or claim malware detection in Stage
+1.
+
+------------------------------------------------------------------------
+
+2. IMPORTANT DEVICE AND DATA SAFETY RULES
+
+I will use my Windows laptop, Ubuntu/WSL environment, Android Emulator,
+and controlled test data.
+
+My personal Android phone must remain safe.
+
+STRICT RULES:
+
+1.  Never root my personal Android phone.
+2.  Never unlock its bootloader.
+3.  Never modify Android system files.
+4.  Never install unknown APK files.
+5.  Never delete, modify, or upload my personal files.
+6.  Never access personal messages, passwords, private application data,
+    or personal browsing content.
+7.  Never run malware samples on my personal phone or laptop.
+8.  Never conduct stress tests or attack simulations on my personal
+    phone.
+9.  Use Android Studio Emulator for installation and Android monitoring
+    experiments.
+10. Use harmless, project-owned test files and applications.
+11. Monitor only folders and devices that I explicitly designate.
+12. Never execute unknown downloaded files.
+
+Before running a command that could: - Delete or overwrite files. -
+Change security settings. - Require administrator privileges. - Access
+files outside the project. - Install an application or system driver. -
+Modify network configuration. - Install or execute an APK.
+
+Explain the action and its consequences and request my approval when
+needed.
+
+Protect my device and data above all project requirements.
+
+------------------------------------------------------------------------
+
+3. FIRST TASK: INSPECT THE ENVIRONMENT AND INSTALL ALL REQUIREMENTS
+
+I do not want to install every dependency manually, one by one.
+
+Your first responsibility is to inspect my computer and automatically
+install the required software and project dependencies wherever
+possible.
+
+Use Windows PowerShell for Windows-specific installation and USB
+monitoring.
+
+Do not assume that a tool is already installed. Check first.
+
+3.1 Detect the environment
+
+Inspect:
+
+-   Windows version and architecture.
+-   Available disk space.
+-   Python installation and versions.
+-   Git installation.
+-   PowerShell version.
+-   Existing Antigravity workspace.
+-   Existing project files.
+-   Wireshark/TShark availability.
+-   Android Studio availability.
+-   Android SDK availability.
+-   ADB availability.
+-   Android Emulator availability.
+-   Available Python environments.
+-   Ubuntu/WSL availability.
+
+Do not assume the system is x64. Detect its actual architecture.
+
+Do not overwrite existing working installations or environments
+unnecessarily.
+
+Prepare an installation report showing: - Software name. - Detected
+version. - Installed or missing status. - Required action. -
+Verification result.
+
+3.2 Required development software
+
+Install or configure the following if missing:
+
+A. Python
+
+-   Python 3.12, preferably, if compatible with the existing
+    environment.
+-   Python virtual environment.
+-   pip.
+
+Verify: - python –version - pip –version
+
+If Python 3.12 cannot be installed, select a compatible supported Python
+version and explain why.
+
+B. Git
+
+Install Git for Windows if missing.
+
+Verify: - git –version
+
+Do not invent my Git username or email. Ask me before configuring them
+if required.
+
+C. Wireshark and TShark
+
+Install Wireshark and TShark.
+
+Install Npcap if required for packet capture on Windows.
+
+Verify: - tshark –version - tshark -D
+
+If the executable is not in PATH, detect its actual installation path
+and configure the application to use that path.
+
+Do not enable unrestricted packet capture or change network settings
+without approval.
+
+D. Android Studio and Android SDK
+
+Install Android Studio if missing.
+
+Configure: - Android SDK. - Android SDK Platform-Tools. - Android SDK
+Build-Tools. - Android Emulator. - A compatible Android system image.
+
+Create or guide me through creating a test Android Virtual Device.
+
+Verify: - adb version - adb devices
+
+Use an actual emulator serial discovered from ADB. Never assume a serial
+number.
+
+Do not install any application on my personal phone.
+
+E. Google Chrome
+
+Chrome may be installed if needed for dashboard testing. If it is
+already installed, do not reinstall it.
+
+F. Windows USB monitoring requirements
+
+Inspect the availability of: - PowerShell event log access. - Windows
+Event Log providers. - Kernel-PnP logs. - DriverFrameworks-UserMode
+logs. - Other relevant USB event channels.
+
+Do not assume that particular event IDs or providers are identical
+across Windows versions.
+
+Discover the actual available channels and events on my machine.
+
+3.3 Python project dependencies
+
+Create a project virtual environment named .venv.
+
+Install and configure the compatible versions of the required Python
+packages:
+
+-   Django
+-   watchdog
+-   pywin32
+-   python-dotenv
+-   pytest
+-   pytest-django
+
+Add other packages only when an implemented feature actually needs them.
+
+Possible additional packages after checking their necessity: - pandas
+for structured data analysis. - scapy for offline packet analysis where
+appropriate. - dpkt for PCAP parsing.
+
+Avoid unnecessary packages and dependency conflicts.
+
+Do not install TensorFlow, PyTorch, CUDA, SYCL, OpenACC, or other AI/HPC
+libraries for this Stage 1 implementation. These belong to later work
+unless a concrete Stage 1 requirement justifies them.
+
+SQLite is sufficient for Stage 1. Do not install a separate SQLite
+server.
+
+3.4 Installation management
+
+Create:
+
+-   requirements.txt
+-   requirements-lock.txt if appropriate.
+-   install_requirements.ps1
+-   verify_environment.ps1
+-   setup documentation.
+
+The installation script should:
+
+1.  Check existing software.
+2.  Detect missing dependencies.
+3.  Install only missing requirements.
+4.  Create the virtual environment.
+5.  Install Python packages.
+6.  Verify package imports.
+7.  Verify executable paths.
+8.  Display a clear success/failure report.
+
+Make installation repeatable and safe.
+
+Do not silently ignore installation failures.
+
+Do not change PowerShell execution policy globally just to activate the
+virtual environment.
+
+If an installer needs administrator privileges, a driver, a license
+agreement, or a system restart, explain this and request approval rather
+than bypassing the restriction.
+
+Do not download software from unofficial or unknown websites. Use
+official vendor sources.
+
+If automatic installation is not possible, provide the exact official
+download link and explain the remaining manual action. Do not claim that
+software is installed until its version or functionality has been
+verified.
+
+------------------------------------------------------------------------
+
+4. TECHNOLOGY STACK
+
+Use the following architecture:
+
+Backend: - Python - Django
+
+Database: - SQLite - Django ORM
+
+Frontend: - HTML - CSS - JavaScript - Bootstrap
+
+Monitoring and collection: - Python watchdog - Windows Event Logs /
+PowerShell for USB monitoring - Wireshark / TShark for network capture
+and analysis - Android Debug Bridge (ADB) - Android Studio Emulator
+
+Testing: - pytest - pytest-django - Django tests
+
+Version control: - Git
+
+Use modular programming and maintain separation between collectors,
+processing, database, dashboard, and evidence management.
+
+Do not introduce unnecessary frameworks.
+
+------------------------------------------------------------------------
+
+5. PROJECT DIRECTORY STRUCTURE
+
+Create a clean, scalable project structure similar to this:
+
+digital_forensics_system/ │ ├── collectors/ │ ├── init.py │ ├──
+base_collector.py │ ├── usb_collector.py │ ├── file_collector.py │ ├──
+network_collector.py │ └── android_collector.py │ ├── processing/ │ ├──
+init.py │ ├── parser.py │ ├── normalizer.py │ ├── validator.py │ └──
+deduplicator.py │ ├── database/ │ ├── init.py │ ├── models.py │ ├──
+repositories.py │ └── migrations/ │ ├── evidence/ │ ├── original_logs/ │
+├── manifests/ │ └── processed/ │ ├── test_data/ │ ├──
+watched_downloads/ │ ├── network_samples/ │ ├── usb_samples/ │ └──
+android_samples/ │ ├── dashboard/ │ ├── templates/ │ ├── static/ │ ├──
+views.py │ ├── urls.py │ └── tests.py │ ├── tests/ │ ├──
+test_usb_collector.py │ ├── test_file_collector.py │ ├──
+test_network_collector.py │ ├── test_android_collector.py │ ├──
+test_normalizer.py │ ├── test_validator.py │ └── test_integration.py │
+├── config/ │ └── settings.yaml │ ├── documentation/ │ ├──
+architecture.md │ ├── installation.md │ ├── user_guide.md │ ├──
+testing_report.md │ ├── limitations.md │ └── stage1_completion_report.md
+│ ├── scripts/ │ ├── install_requirements.ps1 │ ├──
+verify_environment.ps1 │ └── run_project.ps1 │ ├── manage.py ├── main.py
+├── requirements.txt ├── .gitignore ├── .env.example ├── README.md └──
+AGENTS.md
+
+You may adjust the structure if there is a strong technical reason.
+Explain any major change before implementing it.
+
+Keep the original evidence directory separate from processed files.
+
+Do not store private personal data in the repository.
+
+------------------------------------------------------------------------
+
+6. COMMON EVENT DATA MODEL
+
+Every collector must generate events using a common schema.
+
+Create an event model with suitable fields:
+
+-   id
+-   event_id
+-   event_timestamp
+-   collection_timestamp
+-   event_type
+-   source
+-   device_id
+-   description
+-   metadata
+-   evidence_reference
+-   source_record_id
+-   collector_name
+-   validation_status
+
+Use timezone-aware timestamps.
+
+Use Asia/Kolkata as the default display timezone while preserving the
+original timestamp and its timezone/offset when available.
+
+The event timestamp and collection timestamp must be separate.
+
+Use JSON metadata for source-specific details.
+
+Add proper database indexes for: - event_timestamp - event_type -
+source - device_id
+
+Use database transactions, validation, foreign keys where appropriate,
+and safe parameterized database access through Django ORM.
+
+Avoid duplicate events.
+
+------------------------------------------------------------------------
+
+7. USB MONITORING MODULE
+
+Objective:
+
+Detect USB device connection and disconnection events on my Windows
+host.
+
+Requirements:
+
+1.  Discover available Windows Event Log channels and providers.
+2.  Identify which events actually appear when a harmless USB device is
+    connected and disconnected.
+3.  Do not hardcode assumed event IDs.
+4.  Record available information:
+    -   Event timestamp.
+    -   Collection timestamp.
+    -   Device description.
+    -   Vendor ID, if available.
+    -   Product ID, if available.
+    -   Device identifier, if available.
+    -   Provider name.
+    -   Event ID.
+    -   Channel.
+    -   Record ID.
+    -   Original event message/reference.
+5.  Normalize events into the common event schema.
+6.  Detect and avoid duplicate records.
+7.  Record collector errors and unavailable fields.
+8.  Provide a controlled manual testing procedure.
+
+IMPORTANT: USB connection does not prove that a file was copied. Never
+claim that the collector detects USB file transfers unless separate
+evidence actually supports that conclusion.
+
+If Windows does not expose sufficient historical events, clearly
+document the limitation and propose a safe alternative.
+
+Do not require administrator privileges unless genuinely necessary and
+approved.
+
+------------------------------------------------------------------------
+
+8. FILE DOWNLOAD AND FILE ACTIVITY MODULE
+
+Objective:
+
+Monitor files arriving in a dedicated project-controlled folder.
+
+Use:
+
+test_data/watched_downloads/
+
+Do not monitor my entire personal Downloads folder, Desktop, or
+Documents.
+
+Requirements:
+
+1.  Implement a watchdog-based file system observer.
+2.  Detect file creation, modification, and move/rename events.
+3.  Handle browser temporary files such as:
+    -   .crdownload
+    -   .part
+    -   Other temporary download files where relevant.
+4.  Do not report a file as complete while it is still being written.
+5.  Wait until file size and modification time are stable.
+6.  Calculate SHA-256.
+7.  Record:
+    -   File name.
+    -   Extension.
+    -   File size.
+    -   Observed filesystem timestamps.
+    -   SHA-256.
+    -   Monitored folder.
+    -   Collection timestamp.
+    -   Evidence reference.
+8.  Avoid duplicate events.
+9.  Handle file renames and partial downloads.
+10. Handle errors and collector restarts.
+11. Support harmless PDF, TXT, ZIP, and APK test files.
+
+Differentiate between: - file_created - file_modified - file_moved -
+file_download_observed - apk_file_observed
+
+Do not claim that a filesystem watcher knows the download website. Store
+the source URL only if a separate trusted source actually provides it.
+Otherwise mark it unknown.
+
+Never open or execute downloaded APKs.
+
+------------------------------------------------------------------------
+
+9. APK FILE OBSERVATION AND ANDROID INSTALLATION MODULE
+
+This module has three different concepts:
+
+A. APK file observed on the computer.
+
+B. APK installation observed on an Android device.
+
+C. Android application usage/activity observed through supported
+interfaces.
+
+Do not combine these into one event.
+
+APK file observation
+
+When an APK arrives in the dedicated monitored folder:
+
+-   Record filename.
+-   Calculate SHA-256.
+-   Record file size.
+-   Record collection time.
+-   Generate apk_file_observed.
+-   Never execute it automatically.
+
+Android Emulator
+
+Use Android Studio Emulator as the primary Android testing environment.
+
+Use ADB to:
+
+-   Detect connected emulator devices.
+-   Identify actual device serials.
+-   Collect supported package information.
+-   Record before-install package snapshots.
+-   Install only a project-owned harmless test APK after explicit
+    approval.
+-   Record installation result and time.
+-   Collect after-install package snapshots.
+-   Compare the before/after package lists.
+-   Record the newly observed package name.
+-   Collect available version and package metadata where supported.
+
+Example commands may include:
+
+adb devices
+
+adb shell pm list packages -3
+
+adb shell dumpsys package PACKAGE_NAME
+
+Use the actual emulator serial and validate commands against the
+installed Android SDK.
+
+Do not assume that package installation timestamps or historical
+installation logs are available on every Android version.
+
+A before/after snapshot comparison is a controlled test, not a universal
+historical installation-monitoring mechanism.
+
+Android activity
+
+Investigate supported Android Usage Stats or emulator diagnostics.
+
+Only use documented permissions and supported interfaces.
+
+Do not access private messages, passwords, private app databases, or
+protected application data.
+
+Clearly explain Android permission and visibility limitations.
+
+------------------------------------------------------------------------
+
+10. NETWORK MONITORING MODULE
+
+Objective:
+
+Collect and analyze authorized network traffic metadata.
+
+Use Wireshark/TShark and PCAP/PCAPNG files.
+
+Requirements:
+
+1.  Support offline PCAP/PCAPNG import.
+2.  Support controlled live capture only when explicitly configured and
+    authorized.
+3.  Record capture start and end times where available.
+4.  Parse packet metadata such as:
+    -   Timestamp.
+    -   Source IP.
+    -   Destination IP.
+    -   Source port.
+    -   Destination port.
+    -   Protocol.
+    -   Packet length.
+    -   TCP flags where available.
+    -   DNS query metadata where available.
+5.  Preserve packet/frame numbers as evidence references.
+6.  Handle malformed or incomplete capture files.
+7.  Do not silently discard parsing errors.
+8.  Normalize network events into the common schema.
+9.  Prevent duplicate processing of the same evidence file.
+10. Keep original PCAP files unchanged.
+
+Do not attempt to decrypt HTTPS traffic.
+
+Do not collect private credentials or message contents.
+
+Do not assume my laptop can see all traffic from another device on the
+same Wi-Fi. Explain the limitations of switched Wi-Fi networks.
+
+Initially prioritize importing an exported PCAP/PCAPNG file over
+complicated live capture.
+
+------------------------------------------------------------------------
+
+11. EVIDENCE INTEGRITY AND FORENSIC RECORD KEEPING
+
+This is an important part of the project.
+
+Implement an evidence management system.
+
+For every imported original evidence file:
+
+1.  Assign a unique evidence ID.
+2.  Preserve the original file unchanged.
+3.  Calculate SHA-256.
+4.  Record file size.
+5.  Record original filename.
+6.  Record evidence type.
+7.  Record acquisition/import timestamp.
+8.  Record source device or source description when known.
+9.  Record acquisition method.
+10. Record timezone information where available.
+11. Record collector/tool name and version.
+12. Store related manifest information.
+13. Provide a way to recalculate the hash and verify file integrity.
+
+Never overwrite original evidence.
+
+Process a separate working copy whenever necessary.
+
+Include evidence references in events so the user can trace a timeline
+entry back to its original source.
+
+IMPORTANT: A matching SHA-256 verifies that the file contents have not
+changed relative to the recorded hash. It does not independently prove
+the authenticity or origin of the evidence.
+
+Do not describe this project as a legally certified forensic acquisition
+system.
+
+------------------------------------------------------------------------
+
+12. COLLECTOR MANAGEMENT
+
+Create a common collector architecture.
+
+Every collector should support:
+
+-   initialize()
+-   start()
+-   stop()
+-   get_status()
+-   validate_configuration()
+-   report_error()
+
+Each collector must expose:
+
+-   Collector name.
+-   Running/stopped status.
+-   Last successful collection time.
+-   Total events collected.
+-   Total errors.
+-   Current configuration.
+-   Last error message, if any.
+
+Create a collector_runs database table.
+
+Store: - Run ID. - Collector name. - Start time. - End time. - Status. -
+Event count. - Error count. - Error details.
+
+One collector failing must not crash the entire application.
+
+Errors must be logged and visible in the dashboard.
+
+------------------------------------------------------------------------
+
+13. EVENT NORMALIZATION AND VALIDATION
+
+Implement a centralized processing pipeline.
+
+Pipeline:
+
+Raw Source | v Parser | v Normalizer | v Validator | v Deduplicator | v
+SQLite Database | v Unified Timeline
+
+Requirements:
+
+-   Normalize event names.
+-   Normalize timestamps.
+-   Preserve source timezone information.
+-   Validate required fields.
+-   Handle missing values.
+-   Handle malformed records.
+-   Preserve original source references.
+-   Prevent duplicate processing.
+-   Record rejected events and reasons.
+-   Never fabricate missing information.
+
+Do not silently convert an unknown timestamp into a confirmed event
+time.
+
+------------------------------------------------------------------------
+
+14. DATABASE DESIGN
+
+Use SQLite through Django ORM.
+
+Create appropriate models for:
+
+1.  Event
+2.  EvidenceFile
+3.  Device
+4.  CollectorRun
+5.  CollectorError, if required
+
+Add appropriate: - Primary keys. - Foreign keys. - Unique constraints. -
+Indexes. - Validation. - Database migrations.
+
+Ensure database operations are safe and consistent.
+
+Provide a database initialization and migration procedure.
+
+Do not populate the production dashboard with fabricated events.
+
+Clearly separate demonstration test data from actual collected evidence.
+
+------------------------------------------------------------------------
+
+15. DJANGO DASHBOARD
+
+Create a professional, responsive dashboard using Django, HTML, CSS,
+JavaScript, and Bootstrap.
+
+It must display real database information.
+
+Create these pages:
+
+A. Overview Dashboard
+
+Display: - Total events. - Network events. - USB events. - File
+events. - Android events. - Total evidence files. - Active collectors. -
+Failed collectors. - Latest activity.
+
+Statistics must come from actual database queries.
+
+If there are no records, display zero and an informative empty state.
+
+B. Network Activity
+
+Display: - Timestamp. - Source IP. - Destination IP. - Ports. -
+Protocol. - Packet length. - Evidence reference.
+
+Add filters.
+
+C. USB Activity
+
+Display: - Connection/disconnection events. - Device information where
+available. - Vendor ID. - Product ID. - Event source. - Timestamp.
+
+D. File Activity
+
+Display: - File name. - Extension. - File size. - SHA-256. -
+Creation/modification observation. - Evidence reference.
+
+E. Android Activity
+
+Display: - Device/emulator. - Package name. - Application version where
+available. - Installation observation. - APK file hash. - Event
+timestamp.
+
+Clearly distinguish APK file observation from confirmed emulator
+installation.
+
+F. Unified Timeline
+
+This is the most important page.
+
+Combine all event types into one chronological timeline.
+
+Features: - Latest-first sorting by default. - Date range filter. -
+Event type filter. - Source filter. - Device filter. - Search. -
+Pagination. - Event details. - Evidence reference. - Export to CSV.
+
+Handle different timezones correctly.
+
+G. Evidence Management
+
+Display: - Evidence ID. - Filename. - Type. - Size. - SHA-256. - Import
+timestamp. - Integrity verification status.
+
+H. Collector Management
+
+Display: - Collector status. - Last run. - Event count. - Errors. -
+Start/stop controls where safely supported.
+
+Require confirmation before stopping or starting collectors that perform
+system-level actions.
+
+Do not expose unsafe system commands through the dashboard.
+
+I. Reports
+
+Generate reports containing: - Date range. - Event counts. - Event
+categories. - Collector status. - Evidence references. - Data quality
+warnings.
+
+Allow CSV export.
+
+------------------------------------------------------------------------
+
+16. CONFIGURATION
+
+Create a central configuration file.
+
+Include configurable settings for:
+
+-   Project timezone.
+-   Database path.
+-   Evidence directory.
+-   Original evidence directory.
+-   Processed data directory.
+-   Watched download folder.
+-   USB monitoring settings.
+-   TShark executable path.
+-   Network capture/import directory.
+-   Android SDK/ADB path.
+-   Emulator serial.
+-   Logging configuration.
+-   File stability waiting period.
+-   Duplicate detection.
+-   Dashboard pagination.
+
+Use environment variables for machine-specific paths and secrets.
+
+Provide .env.example.
+
+Do not put passwords, tokens, or private credentials in the repository.
+
+Use safe default settings.
+
+------------------------------------------------------------------------
+
+17. TESTING REQUIREMENTS
+
+Do not consider a module complete simply because its code runs.
+
+Every module must be tested.
+
+Create unit tests, integration tests, and manual testing instructions.
+
+USB tests
+
+-   USB device connected.
+-   USB device disconnected.
+-   Unknown device information.
+-   Missing event channel.
+-   Duplicate events.
+-   Permission failure.
+
+File tests
+
+-   Harmless PDF created.
+-   File modified.
+-   File renamed.
+-   Temporary download file.
+-   File completed.
+-   APK file observed.
+-   Duplicate notifications.
+-   Watcher stopped and restarted.
+
+Android tests
+
+-   Emulator detected.
+-   Package snapshot collected.
+-   APK file observed without installation.
+-   Known harmless APK installed in emulator after approval.
+-   Before/after package comparison.
+-   Missing emulator.
+-   ADB failure.
+
+Network tests
+
+-   Valid PCAP imported.
+-   PCAPNG imported.
+-   Empty capture.
+-   Malformed capture.
+-   Duplicate evidence import.
+-   Packet metadata extraction.
+-   Missing optional packet fields.
+
+Database and timeline tests
+
+-   Event saved.
+-   Invalid event rejected.
+-   Duplicate event handled.
+-   Timestamp sorting correct.
+-   Timezone handling correct.
+-   Filters work.
+-   CSV export works.
+-   Evidence reference resolves correctly.
+
+Use synthetic test data and controlled real events.
+
+For every test, record: - Test ID. - Objective. - Steps. - Expected
+result. - Actual result. - Pass/fail. - Error details.
+
+Do not mark an untested feature as complete.
+
+------------------------------------------------------------------------
+
+18. SECURITY AND PRIVACY
+
+Implement:
+
+-   Django authentication.
+-   CSRF protection.
+-   Input validation.
+-   Safe file path handling.
+-   Safe upload handling.
+-   Parameterized queries through ORM.
+-   Restricted evidence access.
+-   No unnecessary personal data collection.
+-   No public exposure of the development server.
+-   No hardcoded credentials.
+-   No unsafe file execution.
+
+Bind the development server to localhost during development.
+
+Keep evidence files outside publicly served static/media directories
+unless a secure controlled download mechanism is implemented.
+
+------------------------------------------------------------------------
+
+19. DOCUMENTATION
+
+Create complete documentation:
+
+1.  README.md
+2.  Installation guide.
+3.  Environment verification guide.
+4.  Project architecture.
+5.  Database schema.
+6.  Collector working explanation.
+7.  USB testing guide.
+8.  File monitoring guide.
+9.  Android Emulator testing guide.
+10. Network capture/import guide.
+11. Evidence integrity guide.
+12. Dashboard user guide.
+13. Troubleshooting guide.
+14. Known limitations.
+15. Stage 1 testing report.
+16. Stage 1 completion report.
+
+Include architecture diagrams and flowcharts using Mermaid where useful.
+
+Explain commands and important configuration settings in simple English.
+
+------------------------------------------------------------------------
+
+20. IMPLEMENTATION ORDER
+
+Follow this order strictly.
+
+Do not implement everything simultaneously.
+
+PHASE 1 – Environment and Project Setup - Inspect environment. - Install
+required dependencies. - Verify installations. - Create directory
+structure. - Configure Git and .gitignore. - Create configuration. -
+Create documentation.
+
+PHASE 2 – USB Collector - Discover actual Windows event sources. -
+Perform controlled USB connection/disconnection tests. - Implement
+collector. - Normalize events. - Test and document.
+
+PHASE 3 – File Monitoring - Create dedicated watched folder. - Implement
+watchdog collector. - Detect file creation, modification, rename and
+completion. - Calculate SHA-256. - Test PDF and other harmless files.
+
+PHASE 4 – APK Observation - Detect APK files in the watched folder. -
+Calculate hashes. - Store APK metadata. - Do not execute APK files.
+
+PHASE 5 – Android Emulator - Configure ADB. - Detect emulator. - Collect
+package snapshots. - Install only the known project-owned test APK after
+approval. - Compare package snapshots. - Test and document limitations.
+
+PHASE 6 – Network Collector - Import PCAP/PCAPNG. - Parse packet
+metadata. - Preserve packet references. - Test offline capture
+processing.
+
+PHASE 7 – Processing Pipeline - Common event schema. - Parser. -
+Normalizer. - Validator. - Deduplicator. - Error handling.
+
+PHASE 8 – Evidence Management - Evidence IDs. - SHA-256. - Original
+evidence preservation. - Manifests. - Integrity verification.
+
+PHASE 9 – Database - Django models. - Migrations. - Indexes. -
+Repository/database operations. - Integration tests.
+
+PHASE 10 – Unified Timeline - Combine events. - Sort chronologically. -
+Apply filters. - Verify evidence references.
+
+PHASE 11 – Django Dashboard - Overview. - Network. - USB. - Files. -
+Android. - Timeline. - Evidence. - Collectors. - Reports.
+
+PHASE 12 – FINAL VALIDATION - Run all tests. - Fix errors. - Test the
+complete workflow. - Verify actual database records. - Verify original
+evidence integrity. - Document limitations. - Produce final Stage 1
+report.
+
+------------------------------------------------------------------------
+
+21. IMPORTANT WORKING RULES FOR ANTIGRAVITY
+
+1.  First inspect the existing repository and environment.
+2.  Do not overwrite existing useful work.
+3.  Do not generate a complete untested codebase in one response.
+4.  Install required dependencies in a controlled and repeatable manner.
+5.  Verify each installation.
+6.  Implement one phase at a time.
+7.  Explain the purpose of each module.
+8.  Show me the files created or modified.
+9.  Run relevant tests after each module.
+10. Fix errors before proceeding.
+11. Do not use fake dashboard statistics.
+12. Do not invent Windows event IDs.
+13. Do not claim that USB connection proves file transfer.
+14. Do not claim that APK observation proves installation.
+15. Do not claim that Stage 1 detects all malware or all Android
+    installations.
+16. Keep original evidence unchanged.
+17. Maintain a clear list of completed, pending, failed, and partially
+    implemented features.
+18. Update documentation after each phase.
+19. Keep Git commits at successful milestones, but do not invent my Git
+    identity.
+20. Never silently ignore errors.
+
+If a dependency or feature cannot be installed or implemented, explain
+why and provide a safe alternative.
+
+------------------------------------------------------------------------
+
+22. REQUIRED FIRST RESPONSE FROM YOU
+
+Before writing the actual application code:
+
+1.  Inspect my current machine and project folder.
+2.  Check which required tools are already installed.
+3.  Identify missing requirements.
+4.  Prepare a complete installation plan.
+5.  Explain which dependencies can be installed automatically.
+6.  Identify which actions need administrator privileges or my approval.
+7.  Identify any compatibility issues.
+8.  Present the final architecture and implementation sequence.
+
+Then begin Phase 1 installation and setup.
+
+You may install ordinary missing project dependencies and create project
+files within the approved workspace.
+
+For system-wide installers, drivers, administrator actions, security
+changes, and other consequential operations, request my approval before
+proceeding.
+
+Do not start implementing all collectors immediately.
+
+My final objective is a fully working, tested, documented Stage 1 system
+with real USB, file, APK, Android Emulator, and network event
+collection, a reliable evidence-management pipeline, SQLite storage, and
+a functional Django dashboard.
+
+Prioritize accuracy, safety, evidence integrity, modularity, and
+successful testing over speed.

@@ -1,0 +1,80 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Collectors — ForensicsOS{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="mb-1 fw-bold" style="color:#F59E0B;"><i class="bi bi-activity me-2"></i>Collector Management</h2>
+  <p class="mb-0 text-muted">Monitor and control data collection agents</p>
+</div>
+
+<div class="row g-3 mb-4">
+  {% for cname in "USBCollector,FileCollector,NetworkCollector,AndroidCollector"|split:"," %}
+  <div class="col-md-6 col-lg-3">
+    <div class="stat-card p-3 h-100">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <h6 class="mb-0">
+          {% if cname == 'USBCollector' %}<i class="bi bi-usb-symbol me-1 text-success"></i>
+          {% elif cname == 'FileCollector' %}<i class="bi bi-file-earmark-binary me-1" style="color:#3B82F6;"></i>
+          {% elif cname == 'NetworkCollector' %}<i class="bi bi-wifi me-1" style="color:#06B6D4;"></i>
+          {% else %}<i class="bi bi-phone me-1" style="color:#84CC16;"></i>{% endif %}
+          {{ cname }}
+        </h6>
+        <span class="badge bg-secondary">idle</span>
+      </div>
+      <p class="text-muted small mb-2">
+        {% if cname == 'USBCollector' %}Monitors Windows PnP/USB event logs
+        {% elif cname == 'FileCollector' %}Watches test_data/watched_downloads/
+        {% elif cname == 'NetworkCollector' %}Offline PCAP import + live TShark
+        {% else %}ADB-based Android package monitoring{% endif %}
+      </p>
+      <div class="d-flex gap-1">
+        <button class="btn btn-sm btn-outline-success w-50" onclick="controlCollector('{{ cname }}','start')">Start</button>
+        <button class="btn btn-sm btn-outline-danger w-50" onclick="controlCollector('{{ cname }}','stop')">Stop</button>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="stat-card p-3">
+  <h6 class="mb-3" style="color:#F59E0B;"><i class="bi bi-clock-history me-2"></i>Recent Collector Runs</h6>
+  {% if runs %}
+  <div class="table-responsive">
+    <table class="table table-sm table-hover forensic-table mb-0">
+      <thead><tr><th>Collector</th><th>Status</th><th>Start Time</th><th>End Time</th><th>Events</th><th>Errors</th></tr></thead>
+      <tbody>
+        {% for run in runs %}
+        <tr>
+          <td><strong>{{ run.collector_name }}</strong></td>
+          <td><span class="badge {% if run.status == 'completed' %}bg-success{% elif run.status == 'running' %}bg-warning text-dark{% elif run.status == 'failed' %}bg-danger{% else %}bg-secondary{% endif %}">{{ run.status }}</span></td>
+          <td><small>{{ run.start_time|date:"Y-m-d H:i:s" }}</small></td>
+          <td><small>{{ run.end_time|date:"Y-m-d H:i:s"|default:"—" }}</small></td>
+          <td><span class="badge bg-info text-dark">{{ run.event_count }}</span></td>
+          <td><span class="badge {% if run.error_count > 0 %}bg-warning text-dark{% else %}bg-secondary{% endif %}">{{ run.error_count }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="text-muted text-center py-3">No collector runs recorded yet.</p>
+  {% endif %}
+</div>
+
+<div id="control-alert" class="mt-3" style="display:none;"></div>
+{% endblock %}
+{% block extra_js %}
+<script>
+function controlCollector(name, action) {
+  if (action === 'stop' && !confirm(`Stop ${name}? This will end the current collection session.`)) return;
+  fetch(`/api/collectors/${action}/`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({name: name})
+  }).then(r => r.json()).then(d => {
+    const el = document.getElementById('control-alert');
+    el.style.display = 'block';
+    el.innerHTML = `<div class="alert alert-info alert-dismissible fade show">${d.message || d.error}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
+    setTimeout(() => location.reload(), 2000);
+  }).catch(e => console.error(e));
+}
+</script>
+{% endblock %}

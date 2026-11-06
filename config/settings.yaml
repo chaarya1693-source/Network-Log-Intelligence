@@ -1,0 +1,66 @@
+# config/settings.yaml
+# Central Configuration File for Stage 1 Digital Forensics System
+
+project:
+  name: "HPC-Accelerated AI-Enhanced Digital Forensics and Behavioral Analysis System"
+  stage: 1
+  version: "1.0.0"
+  timezone: "Asia/Kolkata"
+  utc_preservation: true
+
+paths:
+  database_path: "db.sqlite3"
+  evidence_dir: "evidence"
+  original_evidence_dir: "evidence/original_logs"
+  manifests_dir: "evidence/manifests"
+  processed_evidence_dir: "evidence/processed"
+  watched_downloads_dir: "test_data/watched_downloads"
+  network_samples_dir: "test_data/network_samples"
+  usb_samples_dir: "test_data/usb_samples"
+  android_samples_dir: "test_data/android_samples"
+
+tools:
+  tshark:
+    executable_path: "D:\\Aarya\\Softwares\\WireShark\\tshark.exe"
+    enabled: true
+    fallback_python_parser: true
+  android:
+    studio_path: "D:\\Aarya\\Softwares\\Android Studio\\bin\\studio64.exe"
+    sdk_path: "C:\\Users\\AASTHA\\AppData\\Local\\Android\\Sdk"
+    adb_path: "C:\\Users\\AASTHA\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb.exe"
+    emulator_path: "C:\\Users\\AASTHA\\AppData\\Local\\Android\\Sdk\\emulator\\emulator.exe"
+    default_serial: "" # Auto-discovered via adb devices
+
+collection_rules:
+  file_monitoring:
+    stability_wait_seconds: 2.0
+    sha256_verification: true
+    monitored_extensions: [".pdf", ".txt", ".zip", ".apk", ".pcap", ".pcapng", ".log", ".crdownload", ".part"]
+  usb_monitoring:
+    polling_interval_seconds: 3.0
+    use_windows_event_log: true
+    use_wmi_fallback: true
+    event_channels:
+      - "Microsoft-Windows-Kernel-PnP/Device Management"
+      - "Microsoft-Windows-Kernel-PnP/Configuration"
+      - "Microsoft-Windows-UserPnp/DeviceInstall"
+      - "Microsoft-Windows-Storage-ClassPnP/Operational"
+  network_monitoring:
+    offline_pcap_parsing: true
+    live_capture_promiscuous: false
+    default_packet_limit: 10000
+
+forensics:
+  evidence_id_prefix: "EVD-"
+  event_id_prefix: "EVT-"
+  duplicate_detection: true
+  duplicate_window_seconds: 5
+
+dashboard:
+  pagination_size: 25
+  auto_refresh_seconds: 10
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+  file: "forensics_system.log"

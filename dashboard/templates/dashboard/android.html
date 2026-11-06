@@ -1,0 +1,40 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Android Activity — ForensicsOS{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="mb-1 fw-bold" style="color:#84CC16;"><i class="bi bi-phone me-2"></i>Android Activity</h2>
+  <p class="mb-0 text-muted">{{ total }} Android package event{% if total != 1 %}s{% endif %}</p>
+</div>
+{% if events %}
+<div class="table-responsive">
+  <table class="table table-hover forensic-table">
+    <thead><tr><th>Type</th><th>Package</th><th>Device Serial</th><th>Version</th><th>Time (IST)</th></tr></thead>
+    <tbody>
+      {% for ev in events %}
+      <tr>
+        <td><span class="badge badge-{{ ev.event_type }}">{{ ev.event_type }}</span></td>
+        <td><small class="font-monospace">{{ ev.metadata.package|default:"—" }}</small></td>
+        <td><small class="text-muted">{{ ev.metadata.serial|default:"—" }}</small></td>
+        <td><small class="text-muted">{{ ev.metadata.version_name|default:"—" }}</small></td>
+        <td><small>{{ ev.event_timestamp|date:"Y-m-d H:i:s" }}</small></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<nav class="d-flex justify-content-between align-items-center">
+  <small class="text-muted">Page {{ page }} of {{ total_pages }}</small>
+  <ul class="pagination pagination-sm mb-0">
+    {% if page > 1 %}<li class="page-item"><a class="page-link" href="?page={{ page|add:"-1" }}">‹</a></li>{% endif %}
+    <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+    {% if page < total_pages %}<li class="page-item"><a class="page-link" href="?page={{ page|add:"1" }}">›</a></li>{% endif %}
+  </ul>
+</nav>
+{% else %}
+<div class="empty-state stat-card py-5">
+  <i class="bi bi-phone" style="font-size:4rem;opacity:0.3;"></i>
+  <h5 class="mt-3">No Android events yet</h5>
+  <p class="text-muted">Start an Android emulator (AVD) and run the AndroidCollector via ADB.</p>
+</div>
+{% endif %}
+{% endblock %}

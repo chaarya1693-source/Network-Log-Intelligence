@@ -1,0 +1,135 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Overview — ForensicsOS{% endblock %}
+{% block content %}
+<div class="page-header d-flex align-items-center justify-content-between">
+  <div>
+    <h2 class="mb-1 fw-bold" style="background:linear-gradient(90deg,#00D4FF,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+      <i class="bi bi-grid-1x2-fill" style="-webkit-text-fill-color:#00D4FF;"></i> Overview Dashboard
+    </h2>
+    <p class="mb-0 text-muted">Real-time forensic telemetry — Stage 1 collectors</p>
+  </div>
+  <div class="text-end">
+    <div class="badge bg-success px-3 py-2" id="status-badge"><i class="bi bi-circle-fill me-1" style="font-size:0.5rem;"></i> Live</div>
+  </div>
+</div>
+
+<!-- Metric Cards -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="stat-card p-3 h-100">
+      <div class="text-muted small mb-1"><i class="bi bi-collection-fill me-1"></i>Total Events</div>
+      <div class="metric-value metric-cyan">{{ total_events|default:0 }}</div>
+      <div class="text-muted" style="font-size:0.75rem;">All collectors combined</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card p-3 h-100">
+      <div class="text-muted small mb-1"><i class="bi bi-usb-symbol me-1"></i>USB Events</div>
+      <div class="metric-value metric-green">{{ counts.usb_connected|default:0|add:counts.usb_disconnected|default:0 }}</div>
+      <div class="text-muted" style="font-size:0.75rem;">Connect + disconnect</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card p-3 h-100">
+      <div class="text-muted small mb-1"><i class="bi bi-wifi me-1"></i>Network Packets</div>
+      <div class="metric-value metric-orange">{{ counts.network_packet|default:0 }}</div>
+      <div class="text-muted" style="font-size:0.75rem;">From PCAP imports</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card p-3 h-100">
+      <div class="text-muted small mb-1"><i class="bi bi-shield-lock-fill me-1"></i>Evidence Files</div>
+      <div class="metric-value metric-purple">{{ total_evidence|default:0 }}</div>
+      <div class="text-muted" style="font-size:0.75rem;">Chain-of-custody records</div>
+    </div>
+  </div>
+</div>
+
+<!-- Second row -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="stat-card p-3 h-100">
+      <div class="text-muted small mb-1"><i class="bi bi-file-earmark-binary me-1"></i>File Events</div>
+      <div class="metric-value" style="color:#3B82F6;">
+        {{ counts.file_created|default:0|add:counts.file_modified|default:0|add:counts.file_download_observed|default:0 }}
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card p-3 h-100">
+      <div class="text-muted small mb-1"><i class="bi bi-android2 me-1"></i>Android Events</div>
+      <div class="metric-value" style="color:#84CC16;">{{ counts.android_package_observed|default:0|add:counts.apk_installed|default:0 }}</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card p-3 h-100">
+      <div class="text-muted small mb-1"><i class="bi bi-phone-fill me-1"></i>APK Observed</div>
+      <div class="metric-value" style="color:#EC4899;">{{ counts.apk_file_observed|default:0 }}</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card p-3 h-100">
+      <div class="text-muted small mb-1"><i class="bi bi-activity me-1"></i>Collector Runs</div>
+      <div class="metric-value" style="color:#F59E0B;">{{ collector_runs|length }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <!-- Recent Events -->
+  <div class="col-lg-8">
+    <div class="stat-card p-3">
+      <h6 class="mb-3" style="color:#00D4FF;"><i class="bi bi-clock-history me-2"></i>Recent Events</h6>
+      {% if recent_events %}
+      <div class="table-responsive">
+        <table class="table table-sm table-hover forensic-table mb-0">
+          <thead><tr><th>Type</th><th>Source</th><th>Description</th><th>Time (IST)</th></tr></thead>
+          <tbody>
+            {% for ev in recent_events %}
+            <tr>
+              <td><span class="badge badge-{{ ev.event_type }}">{{ ev.event_type|cut:"_"|title }}</span></td>
+              <td><small class="text-muted">{{ ev.source|truncatechars:30 }}</small></td>
+              <td><small>{{ ev.description|truncatechars:50 }}</small></td>
+              <td><small class="text-muted">{{ ev.event_timestamp|date:"H:i:s d/m" }}</small></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-2 text-end"><a href="/timeline/" class="btn btn-sm btn-outline-info">View All →</a></div>
+      {% else %}
+      <div class="empty-state py-4">
+        <i class="bi bi-inbox" style="font-size:3rem;opacity:0.3;"></i>
+        <p class="mt-2 mb-0">No events yet. Start a collector to see data.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Collector Runs -->
+  <div class="col-lg-4">
+    <div class="stat-card p-3">
+      <h6 class="mb-3" style="color:#7C3AED;"><i class="bi bi-activity me-2"></i>Recent Collector Runs</h6>
+      {% if collector_runs %}
+        {% for run in collector_runs %}
+        <div class="d-flex justify-content-between align-items-center mb-2 p-2" style="background:rgba(255,255,255,0.03);border-radius:6px;">
+          <div>
+            <div class="small fw-bold">{{ run.collector_name }}</div>
+            <div style="font-size:0.7rem;color:#8B9CC8;">{{ run.start_time|date:"d/m H:i" }}</div>
+          </div>
+          <div class="text-end">
+            <span class="badge {% if run.status == 'completed' %}bg-success{% elif run.status == 'running' %}bg-warning{% elif run.status == 'failed' %}bg-danger{% else %}bg-secondary{% endif %}">
+              {{ run.status }}
+            </span>
+            <div style="font-size:0.7rem;color:#8B9CC8;">{{ run.event_count }} events</div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted text-center py-3">No collector runs yet.</p>
+      {% endif %}
+      <a href="/collectors/" class="btn btn-sm btn-outline-secondary w-100 mt-2">Manage Collectors →</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

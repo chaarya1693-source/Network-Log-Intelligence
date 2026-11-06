@@ -1,0 +1,94 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Timeline — ForensicsOS{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+      <h2 class="mb-1 fw-bold" style="color:#00D4FF;"><i class="bi bi-clock-history me-2"></i>Unified Timeline</h2>
+      <p class="mb-0 text-muted">{{ total }} event{% if total != 1 %}s{% endif %} — latest first</p>
+    </div>
+    <a href="/reports/export/?type={{ event_type }}" class="btn btn-sm btn-outline-success">
+      <i class="bi bi-download me-1"></i>Export CSV
+    </a>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="stat-card p-3 mb-3">
+  <form method="get" class="row g-2 align-items-end">
+    <div class="col-md-2">
+      <label class="form-label small text-muted">Event Type</label>
+      <select name="type" class="form-select form-select-sm">
+        <option value="">All Types</option>
+        {% for et in event_types %}<option value="{{ et }}" {% if et == event_type %}selected{% endif %}>{{ et }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label small text-muted">Source</label>
+      <input type="text" name="source" class="form-control form-control-sm" value="{{ source }}" placeholder="Filter source...">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label small text-muted">Start Date</label>
+      <input type="datetime-local" name="start" class="form-control form-control-sm" value="{{ start_dt }}">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label small text-muted">End Date</label>
+      <input type="datetime-local" name="end" class="form-control form-control-sm" value="{{ end_dt }}">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label small text-muted">Search</label>
+      <input type="text" name="search" class="form-control form-control-sm" value="{{ search }}" placeholder="Description...">
+    </div>
+    <div class="col-md-2 d-flex gap-1">
+      <button type="submit" class="btn btn-sm btn-primary w-100">Filter</button>
+      <a href="/timeline/" class="btn btn-sm btn-outline-secondary">Clear</a>
+    </div>
+  </form>
+</div>
+
+{% if events %}
+<div class="table-responsive">
+  <table class="table table-hover forensic-table">
+    <thead><tr>
+      <th>Event ID</th><th>Type</th><th>Timestamp (IST)</th><th>Source</th>
+      <th>Description</th><th>Status</th><th>Evidence</th>
+    </tr></thead>
+    <tbody>
+      {% for ev in events %}
+      <tr>
+        <td><small class="font-monospace text-muted">{{ ev.event_id }}</small></td>
+        <td><span class="badge badge-{{ ev.event_type }}">{{ ev.event_type }}</span></td>
+        <td><small>{{ ev.event_timestamp|date:"Y-m-d H:i:s" }}</small></td>
+        <td><small class="text-muted">{{ ev.source|truncatechars:35 }}</small></td>
+        <td><small>{{ ev.description|truncatechars:70 }}</small></td>
+        <td>
+          <span class="badge {% if ev.validation_status == 'valid' %}bg-success{% elif ev.validation_status == 'warning' %}bg-warning text-dark{% elif ev.validation_status == 'invalid' %}bg-danger{% else %}bg-secondary{% endif %}">
+            {{ ev.validation_status }}
+          </span>
+        </td>
+        <td>
+          {% if ev.evidence %}<a href="/evidence/" class="badge bg-info text-dark text-decoration-none" style="font-size:0.65rem;">{{ ev.evidence.evidence_id }}</a>{% else %}<span class="text-muted">—</span>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+<nav class="d-flex justify-content-between align-items-center">
+  <small class="text-muted">Showing page {{ page }} of {{ total_pages }} ({{ total }} total)</small>
+  <ul class="pagination pagination-sm mb-0">
+    {% if page > 1 %}<li class="page-item"><a class="page-link" href="?page={{ page|add:"-1" }}&type={{ event_type }}&source={{ source }}&search={{ search }}">‹</a></li>{% endif %}
+    <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+    {% if page < total_pages %}<li class="page-item"><a class="page-link" href="?page={{ page|add:"1" }}&type={{ event_type }}&source={{ source }}&search={{ search }}">›</a></li>{% endif %}
+  </ul>
+</nav>
+{% else %}
+<div class="empty-state stat-card py-5">
+  <i class="bi bi-clock" style="font-size:4rem;opacity:0.3;"></i>
+  <h5 class="mt-3">No events found</h5>
+  <p class="text-muted">Start a collector or adjust your filters to see events here.</p>
+</div>
+{% endif %}
+{% endblock %}

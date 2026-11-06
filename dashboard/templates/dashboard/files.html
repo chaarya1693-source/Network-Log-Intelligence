@@ -1,0 +1,54 @@
+{% extends "dashboard/base.html" %}
+{% block title %}File Activity — ForensicsOS{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2 class="mb-1 fw-bold" style="color:#3B82F6;"><i class="bi bi-file-earmark-binary me-2"></i>File Activity</h2>
+  <p class="mb-0 text-muted">{{ total }} file event{% if total != 1 %}s{% endif %} from watched_downloads/</p>
+</div>
+<div class="stat-card p-3 mb-3">
+  <form method="get" class="row g-2">
+    <div class="col-md-3">
+      <select name="type" class="form-select form-select-sm">
+        <option value="">All File Events</option>
+        {% for ft in file_types %}<option value="{{ ft }}" {% if ft == event_filter %}selected{% endif %}>{{ ft }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-5"><input type="text" name="search" class="form-control form-control-sm" value="{{ search }}" placeholder="Search filename, hash..."></div>
+    <div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary w-100">Filter</button></div>
+    <div class="col-md-2"><a href="/files/" class="btn btn-sm btn-outline-secondary w-100">Clear</a></div>
+  </form>
+</div>
+{% if events %}
+<div class="table-responsive">
+  <table class="table table-hover forensic-table">
+    <thead><tr><th>Type</th><th>Filename</th><th>SHA-256</th><th>Size</th><th>Time (IST)</th><th>Evidence</th></tr></thead>
+    <tbody>
+      {% for ev in events %}
+      <tr>
+        <td><span class="badge badge-{{ ev.event_type }}">{{ ev.event_type }}</span></td>
+        <td><small>{{ ev.metadata.filename|default:ev.description|truncatechars:40 }}</small></td>
+        <td><small class="font-monospace text-muted" title="{{ ev.metadata.sha256 }}">{{ ev.metadata.sha256|default:"—"|truncatechars:20 }}</small></td>
+        <td><small>{% if ev.metadata.file_size %}{{ ev.metadata.file_size|filesizeformat }}{% else %}—{% endif %}</small></td>
+        <td><small>{{ ev.event_timestamp|date:"Y-m-d H:i:s" }}</small></td>
+        <td>{% if ev.evidence %}<span class="badge bg-info text-dark" style="font-size:0.65rem;">{{ ev.evidence.evidence_id }}</span>{% else %}—{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<nav class="d-flex justify-content-between align-items-center">
+  <small class="text-muted">Page {{ page }} of {{ total_pages }}</small>
+  <ul class="pagination pagination-sm mb-0">
+    {% if page > 1 %}<li class="page-item"><a class="page-link" href="?page={{ page|add:"-1" }}&type={{ event_filter }}&search={{ search }}">‹</a></li>{% endif %}
+    <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+    {% if page < total_pages %}<li class="page-item"><a class="page-link" href="?page={{ page|add:"1" }}&type={{ event_filter }}&search={{ search }}">›</a></li>{% endif %}
+  </ul>
+</nav>
+{% else %}
+<div class="empty-state stat-card py-5">
+  <i class="bi bi-folder-x" style="font-size:4rem;opacity:0.3;"></i>
+  <h5 class="mt-3">No file events yet</h5>
+  <p class="text-muted">Drop a file into <code>test_data/watched_downloads/</code> and start the FileCollector.</p>
+</div>
+{% endif %}
+{% endblock %}
