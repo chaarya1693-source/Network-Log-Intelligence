@@ -10,12 +10,12 @@
 </div>
 
 <div class="row g-3 mb-4">
-  {% for et in event_types %}
+  {% for item in type_stats %}
   <div class="col-6 col-md-4 col-lg-3">
     <div class="stat-card p-3 text-center">
-      <div class="metric-value" style="font-size:1.8rem;">{{ counts|default:{}|dictsort:et|last|default:0 }}</div>
-      <div class="text-muted small mt-1">{{ et }}</div>
-      <a href="/reports/export/?type={{ et }}" class="btn btn-xs btn-outline-secondary mt-2" style="font-size:0.7rem;padding:2px 8px;">Export</a>
+      <div class="metric-value" style="font-size:1.8rem;">{{ item.count }}</div>
+      <div class="text-muted small mt-1">{{ item.type }}</div>
+      <a href="/reports/export/?type={{ item.type }}" class="btn btn-xs btn-outline-secondary mt-2" style="font-size:0.7rem;padding:2px 8px;">Export</a>
     </div>
   </div>
   {% endfor %}
@@ -29,7 +29,7 @@
 {% block extra_js %}
 <script>
 const labels = [{% for et in event_types %}'{{ et }}',{% endfor %}];
-const data = [{% for et in event_types %}{{ counts|default:0 }},{% endfor %}];
+const data = [{% for item in type_stats %}{{ item.count }},{% endfor %}];
 // Use API to get real counts
 fetch('/api/stats/').then(r=>r.json()).then(stats => {
   const byType = stats.by_type || {};

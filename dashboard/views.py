@@ -23,8 +23,20 @@ EVENT_TYPES = [
 def _get_event_counts():
     from database_app.models import Event
     from django.db.models import Count
-    counts = dict(
+    counts = {et: 0 for et in EVENT_TYPES}
+    db_counts = dict(
         Event.objects.values('event_type').annotate(c=Count('id')).values_list('event_type', 'c')
+    )
+    counts.update(db_counts)
+    counts['usb_total'] = counts.get('usb_connected', 0) + counts.get('usb_disconnected', 0)
+    counts['file_total'] = (
+        counts.get('file_created', 0) +
+        counts.get('file_modified', 0) +
+        counts.get('file_download_observed', 0)
+    )
+    counts['android_total'] = (
+        counts.get('android_package_observed', 0) +
+        counts.get('apk_installed', 0)
     )
     return counts
 
@@ -212,8 +224,11 @@ def collectors_management(request):
     """/collectors/ — Collector status and run history."""
     from database_app.models import CollectorRun
     runs = CollectorRun.objects.order_by('-start_time')[:20]
+    collector_names = ['USBCollector', 'FileCollector', 'NetworkCollector', 'AndroidCollector']
     return render(request, 'dashboard/collectors.html', {
-        'runs': runs, 'page_name': 'collectors',
+        'runs': runs,
+        'collectors': collector_names,
+        'page_name': 'collectors',
     })
 
 
@@ -223,8 +238,16 @@ def reports(request):
     from django.db.models import Count
     counts = _get_event_counts()
     total = Event.objects.count()
+    type_stats = [
+        {'type': et, 'count': counts.get(et, 0)}
+        for et in EVENT_TYPES
+    ]
     return render(request, 'dashboard/reports.html', {
-        'counts': counts, 'total': total, 'event_types': EVENT_TYPES, 'page_name': 'reports',
+        'counts': counts,
+        'total': total,
+        'event_types': EVENT_TYPES,
+        'type_stats': type_stats,
+        'page_name': 'reports',
     })
 
 

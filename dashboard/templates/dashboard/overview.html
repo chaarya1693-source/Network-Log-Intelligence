@@ -25,7 +25,7 @@
   <div class="col-6 col-md-3">
     <div class="stat-card p-3 h-100">
       <div class="text-muted small mb-1"><i class="bi bi-usb-symbol me-1"></i>USB Events</div>
-      <div class="metric-value metric-green">{{ counts.usb_connected|default:0|add:counts.usb_disconnected|default:0 }}</div>
+      <div class="metric-value metric-green">{{ counts.usb_total|default:0 }}</div>
       <div class="text-muted" style="font-size:0.75rem;">Connect + disconnect</div>
     </div>
   </div>
@@ -51,14 +51,14 @@
     <div class="stat-card p-3 h-100">
       <div class="text-muted small mb-1"><i class="bi bi-file-earmark-binary me-1"></i>File Events</div>
       <div class="metric-value" style="color:#3B82F6;">
-        {{ counts.file_created|default:0|add:counts.file_modified|default:0|add:counts.file_download_observed|default:0 }}
+        {{ counts.file_total|default:0 }}
       </div>
     </div>
   </div>
   <div class="col-6 col-md-3">
     <div class="stat-card p-3 h-100">
       <div class="text-muted small mb-1"><i class="bi bi-android2 me-1"></i>Android Events</div>
-      <div class="metric-value" style="color:#84CC16;">{{ counts.android_package_observed|default:0|add:counts.apk_installed|default:0 }}</div>
+      <div class="metric-value" style="color:#84CC16;">{{ counts.android_total|default:0 }}</div>
     </div>
   </div>
   <div class="col-6 col-md-3">

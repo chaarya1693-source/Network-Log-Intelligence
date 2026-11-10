@@ -1,7 +1,6 @@
-"""
+r"""
 collectors/android_collector.py — ADB-based Android emulator/device monitoring.
 Performs package snapshot comparisons. NEVER installs APKs without explicit approval.
-ADB path: C:\Users\AASTHA\AppData\Local\Android\Sdk\platform-tools\adb.exe
 """
 import logging
 import subprocess
@@ -11,9 +10,28 @@ from typing import List, Optional, Dict, Set
 
 from collectors.base_collector import BaseCollector
 
+import os
+import shutil
+
 logger = logging.getLogger('collectors')
 
-ADB_PATH = r'C:\Users\AASTHA\AppData\Local\Android\Sdk\platform-tools\adb.exe'
+
+def get_adb_path(configured_path: Optional[str] = None) -> str:
+    """Discover ADB binary dynamically via configuration, environment, PATH, or SDK defaults."""
+    if configured_path and os.path.exists(configured_path):
+        return configured_path
+    env_path = os.environ.get('ADB_PATH')
+    if env_path and os.path.exists(env_path):
+        return env_path
+    which_path = shutil.which('adb')
+    if which_path:
+        return which_path
+    local_app_data = os.environ.get('LOCALAPPDATA', '')
+    if local_app_data:
+        default_sdk_adb = os.path.join(local_app_data, 'Android', 'Sdk', 'platform-tools', 'adb.exe')
+        if os.path.exists(default_sdk_adb):
+            return default_sdk_adb
+    return configured_path or 'adb'
 
 
 class AndroidCollector(BaseCollector):
@@ -24,7 +42,7 @@ class AndroidCollector(BaseCollector):
 
     def __init__(self, config: dict):
         super().__init__(config)
-        self._adb = config.get('adb_path', ADB_PATH)
+        self._adb = get_adb_path(config.get('adb_path'))
         self._poll_interval = config.get('android_poll_interval_seconds', 10)
         self._last_snapshots: Dict[str, Set[str]] = {}  # serial → package set
 

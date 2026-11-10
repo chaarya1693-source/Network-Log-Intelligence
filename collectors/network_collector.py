@@ -20,7 +20,25 @@ from collectors.base_collector import BaseCollector
 
 logger = logging.getLogger('collectors')
 
-TSHARK_PATH = r'D:\Aarya\Softwares\WireShark\tshark.exe'
+
+def get_tshark_path(configured_path: Optional[str] = None) -> Optional[str]:
+    """Dynamically discover TShark binary from config, environment, PATH, or standard install dirs."""
+    if configured_path and os.path.exists(configured_path):
+        return configured_path
+    env_path = os.environ.get('TSHARK_PATH')
+    if env_path and os.path.exists(env_path):
+        return env_path
+    import shutil
+    which_path = shutil.which('tshark')
+    if which_path:
+        return which_path
+    for candidate in [
+        r'C:\Program Files\Wireshark\tshark.exe',
+        r'C:\Program Files (x86)\Wireshark\tshark.exe',
+    ]:
+        if os.path.exists(candidate):
+            return candidate
+    return configured_path or None
 
 
 def _safe_ip(addr_bytes) -> str:
@@ -49,69 +67,74 @@ def _parse_pcap_dpkt(filepath: str) -> Iterator[dict]:
                 logger.warning(f"dpkt: cannot read {filepath}: {e}")
                 return
         frame_num = 0
-        for ts, buf in pcap:
-            frame_num += 1
-            record = {
-                'frame_number': frame_num,
-                'timestamp': datetime.fromtimestamp(ts, tz=timezone.utc),
-                'src_ip': '', 'dst_ip': '',
-                'src_port': None, 'dst_port': None,
-                'protocol': 'unknown',
-                'packet_length': len(buf),
-                'tcp_flags': '',
-                'dns_query': '',
-            }
-            try:
-                eth = dpkt.ethernet.Ethernet(buf)
-                ip = None
-                if isinstance(eth.data, dpkt.ip.IP):
-                    ip = eth.data
-                    record['src_ip'] = _safe_ip(ip.src)
-                    record['dst_ip'] = _safe_ip(ip.dst)
-                    if isinstance(ip.data, dpkt.tcp.TCP):
-                        tcp = ip.data
-                        record['protocol'] = 'TCP'
-                        record['src_port'] = tcp.sport
-                        record['dst_port'] = tcp.dport
-                        flags = tcp.flags
-                        flag_str = ''
-                        if flags & dpkt.tcp.TH_SYN: flag_str += 'SYN,'
-                        if flags & dpkt.tcp.TH_ACK: flag_str += 'ACK,'
-                        if flags & dpkt.tcp.TH_FIN: flag_str += 'FIN,'
-                        if flags & dpkt.tcp.TH_RST: flag_str += 'RST,'
-                        record['tcp_flags'] = flag_str.rstrip(',')
-                    elif isinstance(ip.data, dpkt.udp.UDP):
-                        udp = ip.data
-                        record['protocol'] = 'UDP'
-                        record['src_port'] = udp.sport
-                        record['dst_port'] = udp.dport
-                        # Try DNS parse
-                        try:
-                            dns = dpkt.dns.DNS(udp.data)
-                            if dns.qr == dpkt.dns.DNS_Q and dns.qd:
-                                record['dns_query'] = dns.qd[0].name
-                        except Exception:
-                            pass
-                    elif isinstance(ip.data, dpkt.icmp.ICMP):
-                        record['protocol'] = 'ICMP'
-                elif isinstance(eth.data, dpkt.ip6.IP6):
-                    ip6 = eth.data
-                    record['src_ip'] = _safe_ip(ip6.src)
-                    record['dst_ip'] = _safe_ip(ip6.dst)
-                    record['protocol'] = 'IPv6'
-            except Exception:
-                pass  # Malformed packet — log and continue
-            yield record
+        try:
+            for ts, buf in pcap:
+                frame_num += 1
+                record = {
+                    'frame_number': frame_num,
+                    'timestamp': datetime.fromtimestamp(ts, tz=timezone.utc),
+                    'src_ip': '', 'dst_ip': '',
+                    'src_port': None, 'dst_port': None,
+                    'protocol': 'unknown',
+                    'packet_length': len(buf),
+                    'tcp_flags': '',
+                    'dns_query': '',
+                }
+                try:
+                    eth = dpkt.ethernet.Ethernet(buf)
+                    ip = None
+                    if isinstance(eth.data, dpkt.ip.IP):
+                        ip = eth.data
+                        record['src_ip'] = _safe_ip(ip.src)
+                        record['dst_ip'] = _safe_ip(ip.dst)
+                        if isinstance(ip.data, dpkt.tcp.TCP):
+                            tcp = ip.data
+                            record['protocol'] = 'TCP'
+                            record['src_port'] = tcp.sport
+                            record['dst_port'] = tcp.dport
+                            flags = tcp.flags
+                            flag_str = ''
+                            if flags & dpkt.tcp.TH_SYN: flag_str += 'SYN,'
+                            if flags & dpkt.tcp.TH_ACK: flag_str += 'ACK,'
+                            if flags & dpkt.tcp.TH_FIN: flag_str += 'FIN,'
+                            if flags & dpkt.tcp.TH_RST: flag_str += 'RST,'
+                            record['tcp_flags'] = flag_str.rstrip(',')
+                        elif isinstance(ip.data, dpkt.udp.UDP):
+                            udp = ip.data
+                            record['protocol'] = 'UDP'
+                            record['src_port'] = udp.sport
+                            record['dst_port'] = udp.dport
+                            # Try DNS parse
+                            try:
+                                dns = dpkt.dns.DNS(udp.data)
+                                if dns.qr == dpkt.dns.DNS_Q and dns.qd:
+                                    record['dns_query'] = dns.qd[0].name
+                            except Exception:
+                                pass
+                        elif isinstance(ip.data, dpkt.icmp.ICMP):
+                            record['protocol'] = 'ICMP'
+                    elif isinstance(eth.data, dpkt.ip6.IP6):
+                        ip6 = eth.data
+                        record['src_ip'] = _safe_ip(ip6.src)
+                        record['dst_ip'] = _safe_ip(ip6.dst)
+                        record['protocol'] = 'IPv6'
+                except Exception:
+                    pass  # Malformed packet — log and continue
+                yield record
+        except Exception as e:
+            logger.warning(f"dpkt: error during packet reading in {filepath}: {e}")
+            return
 
 
-def _parse_pcap_tshark(filepath: str) -> Iterator[dict]:
+def _parse_pcap_tshark(filepath: str, tshark_bin: Optional[str] = None) -> Iterator[dict]:
     """Parse PCAP via TShark JSON output — fallback when dpkt fails."""
-    if not os.path.exists(TSHARK_PATH):
-        logger.warning(f"TShark not found at {TSHARK_PATH}")
+    tshark_path = tshark_bin or get_tshark_path()
+    if not tshark_path or not os.path.exists(tshark_path):
+        logger.warning(f"TShark not available for {filepath}")
         return
     try:
         result = subprocess.run(
-            [TSHARK_PATH, '-r', filepath, '-T', 'json', '-e', 'frame.number',
+            [tshark_path, '-r', filepath, '-T', 'json', '-e', 'frame.number',
              '-e', 'frame.time_epoch', '-e', 'ip.src', '-e', 'ip.dst',
              '-e', 'tcp.srcport', '-e', 'tcp.dstport', '-e', 'udp.srcport',
              '-e', 'udp.dstport', '-e', 'frame.len', '-e', '_ws.col.Protocol',
@@ -160,13 +183,15 @@ class NetworkCollector(BaseCollector):
         return 'NetworkCollector'
 
     def initialize(self) -> bool:
-        logger.info(f"{self.name}: initialized (TShark at {TSHARK_PATH})")
+        tshark = get_tshark_path(self.config.get('tshark_path'))
+        logger.info(f"{self.name}: initialized (TShark: {tshark or 'Offline DPKT/Scapy Mode'})")
         return True
 
     def _collect_loop(self):
         """In daemon mode, scan network_samples dir for new PCAP files periodically."""
         from pathlib import Path
-        samples_dir = Path(self.config.get('project_root', 'D:/Aarya/Unnamed Project')) / 'test_data' / 'network_samples'
+        project_root = Path(self.config.get('project_root') or Path(__file__).resolve().parent.parent)
+        samples_dir = project_root / 'test_data' / 'network_samples'
         while self._running:
             if samples_dir.exists():
                 for f in samples_dir.glob('*.pcap'):

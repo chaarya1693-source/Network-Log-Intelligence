@@ -7,7 +7,7 @@
 </div>
 
 <div class="row g-3 mb-4">
-  {% for cname in "USBCollector,FileCollector,NetworkCollector,AndroidCollector"|split:"," %}
+  {% for cname in collectors %}
   <div class="col-md-6 col-lg-3">
     <div class="stat-card p-3 h-100">
       <div class="d-flex justify-content-between align-items-start mb-2">

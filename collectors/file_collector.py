@@ -84,7 +84,7 @@ class FileCollector(BaseCollector):
 
     def __init__(self, config: dict):
         super().__init__(config)
-        project_root = Path(config.get('project_root', 'D:/Aarya/Unnamed Project'))
+        project_root = Path(config.get('project_root') or Path(__file__).resolve().parent.parent)
         self._watch_dir = project_root / 'test_data' / 'watched_downloads'
         self._stability_wait = config.get('stability_wait_seconds', 2.0)
         self._observer: Optional[Observer] = None

@@ -1,0 +1,25 @@
+[
+  {
+    "event_id": 400,
+    "record_number": 1001,
+    "time_generated": "2026-11-10T06:00:00Z",
+    "source_name": "Microsoft-Windows-Kernel-PnP",
+    "computer": "FORENSIC-WORKSTATION",
+    "strings": [
+      "USB\\VID_0781&PID_5583\\4C530001230411112233",
+      "SanDisk Ultra USB 3.0",
+      "DiskDrive"
+    ]
+  },
+  {
+    "event_id": 430,
+    "record_number": 1002,
+    "time_generated": "2026-11-10T06:15:00Z",
+    "source_name": "Microsoft-Windows-Kernel-PnP",
+    "computer": "FORENSIC-WORKSTATION",
+    "strings": [
+      "USB\\VID_0781&PID_5583\\4C530001230411112233",
+      "Device Removed"
+    ]
+  }
+]

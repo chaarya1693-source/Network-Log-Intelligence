@@ -9,7 +9,7 @@ project:
   utc_preservation: true
 
 paths:
-  database_path: "db.sqlite3"
+  database_path: "forensics.db"
   evidence_dir: "evidence"
   original_evidence_dir: "evidence/original_logs"
   manifests_dir: "evidence/manifests"
@@ -21,14 +21,14 @@ paths:
 
 tools:
   tshark:
-    executable_path: "D:\\Aarya\\Softwares\\WireShark\\tshark.exe"
+    executable_path: "" # Auto-discovered via PATH or TSHARK_PATH in .env
     enabled: true
     fallback_python_parser: true
   android:
-    studio_path: "D:\\Aarya\\Softwares\\Android Studio\\bin\\studio64.exe"
-    sdk_path: "C:\\Users\\AASTHA\\AppData\\Local\\Android\\Sdk"
-    adb_path: "C:\\Users\\AASTHA\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb.exe"
-    emulator_path: "C:\\Users\\AASTHA\\AppData\\Local\\Android\\Sdk\\emulator\\emulator.exe"
+    studio_path: ""
+    sdk_path: ""
+    adb_path: "" # Auto-discovered via PATH or ADB_PATH in .env
+    emulator_path: ""
     default_serial: "" # Auto-discovered via adb devices
 
 collection_rules:
@@ -63,4 +63,4 @@ dashboard:
 logging:
   level: "INFO"
   format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-  file: "forensics_system.log"
+  file: "forensics.log"

@@ -4,13 +4,19 @@ Handles timezone conversion, event_type normalization, and device ID normalizati
 """
 import logging
 from datetime import datetime, timezone, timedelta
-from typing import Any
+from typing import Any, Optional
 
-import pytz
+try:
+    from zoneinfo import ZoneInfo
+    IST = ZoneInfo('Asia/Kolkata')
+except ImportError:
+    try:
+        import pytz
+        IST = pytz.timezone('Asia/Kolkata')
+    except ImportError:
+        IST = timezone.utc
 
 logger = logging.getLogger('collectors')
-
-IST = pytz.timezone('Asia/Kolkata')
 
 EVENT_TYPE_MAP = {
     'usb_connect': 'usb_connected',
@@ -32,30 +38,39 @@ VALID_EVENT_TYPES = {
 }
 
 
-def normalize_timestamp(ts: Any) -> datetime:
+def normalize_timestamp(ts: Any) -> Optional[datetime]:
     """
     Normalize any timestamp value to UTC-aware datetime.
     Preserves original; converts naïve datetimes assuming UTC.
+    Never fabricates a timestamp if missing or unparseable.
     """
+    if ts is None:
+        return None
     if isinstance(ts, datetime):
         if ts.tzinfo is None:
             # Assume UTC for naïve datetimes
             return ts.replace(tzinfo=timezone.utc)
         return ts.astimezone(timezone.utc)
     if isinstance(ts, (int, float)):
-        return datetime.fromtimestamp(ts, tz=timezone.utc)
+        try:
+            return datetime.fromtimestamp(ts, tz=timezone.utc)
+        except (ValueError, OSError, OverflowError):
+            return None
     if isinstance(ts, str):
         for fmt in ('%Y-%m-%dT%H:%M:%S%z', '%Y-%m-%dT%H:%M:%S.%f%z',
-                    '%Y-%m-%d %H:%M:%S', '%Y-%m-%dT%H:%M:%S'):
+                    '%Y-%m-%d %H:%M:%S%z', '%Y-%m-%d %H:%M:%S',
+                    '%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M:%S.%fZ'):
             try:
-                dt = datetime.strptime(ts, fmt)
+                # Handle Z offset manually if needed
+                ts_clean = ts.replace('Z', '+00:00') if ts.endswith('Z') else ts
+                dt = datetime.fromisoformat(ts_clean) if hasattr(datetime, 'fromisoformat') else datetime.strptime(ts, fmt)
                 if dt.tzinfo is None:
                     dt = dt.replace(tzinfo=timezone.utc)
                 return dt.astimezone(timezone.utc)
-            except ValueError:
+            except (ValueError, TypeError):
                 continue
-    logger.warning(f"normalize_timestamp: cannot parse {ts!r}, using now(UTC)")
-    return datetime.now(timezone.utc)
+    logger.warning(f"normalize_timestamp: cannot parse {ts!r} — preserving integrity, not fabricating")
+    return None
 
 
 def normalize_event_type(raw_type: str) -> str:

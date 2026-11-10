@@ -1,0 +1,311 @@
+INFO 2026-11-10 12:36:41,265 file_collector FileCollector: created watch directory C:\Users\Aman\AppData\Local\Temp\tmpfi6d3mt9\test_data\watched_downloads
+INFO 2026-11-10 12:36:41,266 file_collector FileCollector: watching C:\Users\Aman\AppData\Local\Temp\tmpfi6d3mt9\test_data\watched_downloads
+INFO 2026-11-10 12:36:41,398 file_collector FileCollector: recorded apk_file_observed for harmless.apk
+ERROR 2026-11-10 12:36:43,046 log Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 981, in _resolve_lookup
+    current = current[bit]
+              ~~~~~~~^^^^^
+KeyError: 'usb_disconnected'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 992, in _resolve_lookup
+    current = getattr(current, bit)
+AttributeError: 'dict' object has no attribute 'usb_disconnected'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 998, in _resolve_lookup
+    current = current[int(bit)]
+                      ~~~^^^^^
+ValueError: invalid literal for int() with base 10: 'usb_disconnected'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\core\handlers\base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\dashboard\views.py", line 48, in overview
+    return render(request, 'dashboard/overview.html', {
+        'counts': counts,
+    ...<5 lines>...
+        'page': 'overview',
+    })
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\shortcuts.py", line 27, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\test\utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\test\utils.py", line 113, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 1107, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 1068, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 1166, in render
+    output = self.filter_expression.resolve(context)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 826, in resolve
+    arg_vals.append(arg.resolve(context))
+                    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 944, in resolve
+    value = self._resolve_lookup(context)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 1005, in _resolve_lookup
+    raise VariableDoesNotExist(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )  # missing attribute
+    ^
+django.template.base.VariableDoesNotExist: Failed lookup for key [usb_disconnected] in {}
+INFO 2026-11-10 12:36:43,484 network_collector NetworkCollector: initialized (TShark: Offline DPKT/Scapy Mode)
+INFO 2026-11-10 12:36:43,485 network_collector NetworkCollector: importing C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:36:44,018 network_collector NetworkCollector: stored 5 packet events from C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:36:44,028 network_collector NetworkCollector: C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap already processed (hash match)
+INFO 2026-11-10 12:36:44,157 usb_collector USBCollector: win32evtlog available
+WARNING 2026-11-10 12:36:44,256 file_collector SHA-256 failed for non_existent_file_xyz_123.tmp: [Errno 2] No such file or directory: 'non_existent_file_xyz_123.tmp'
+INFO 2026-11-10 12:36:44,384 file_collector FileCollector: created watch directory C:\Users\Aman\AppData\Local\Temp\tmpp1e5tzq3\test_data\watched_downloads
+INFO 2026-11-10 12:36:44,384 file_collector FileCollector: watching C:\Users\Aman\AppData\Local\Temp\tmpp1e5tzq3\test_data\watched_downloads
+WARNING 2026-11-10 12:36:44,408 network_collector dpkt: cannot read C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_empty.pcap: invalid pcapng header
+WARNING 2026-11-10 12:36:44,770 validator validate_event: missing required field 'event_timestamp'
+WARNING 2026-11-10 12:36:44,775 validator validate_event: missing required field 'collector_name'
+INFO 2026-11-10 12:39:46,675 file_collector FileCollector: created watch directory C:\Users\Aman\AppData\Local\Temp\tmp3mvbw6br\test_data\watched_downloads
+INFO 2026-11-10 12:39:46,676 file_collector FileCollector: watching C:\Users\Aman\AppData\Local\Temp\tmp3mvbw6br\test_data\watched_downloads
+INFO 2026-11-10 12:39:46,795 file_collector FileCollector: recorded apk_file_observed for harmless.apk
+ERROR 2026-11-10 12:39:47,521 log Internal Server Error: /collectors/
+Traceback (most recent call last):
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\core\handlers\base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\dashboard\views.py", line 227, in collectors_management
+    return render(request, 'dashboard/collectors.html', {
+        'runs': runs, 'page_name': 'collectors',
+    })
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\shortcuts.py", line 27, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\engine.py", line 186, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 157, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 199, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 602, in parse
+    raise self.error(token, e)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 600, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader_tags.py", line 307, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 602, in parse
+    raise self.error(token, e)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 600, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader_tags.py", line 235, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 602, in parse
+    raise self.error(token, e)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 600, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\defaulttags.py", line 893, in do_for
+    sequence = parser.compile_filter(bits[in_index + 1])
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 693, in compile_filter
+    return FilterExpression(token, self)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 788, in __init__
+    filter_func = parser.find_filter(filter_name)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 699, in find_filter
+    raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
+django.template.exceptions.TemplateSyntaxError: Template: C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\dashboard\templates\dashboard\collectors.html, Invalid filter: 'split'
+INFO 2026-11-10 12:39:49,307 network_collector NetworkCollector: initialized (TShark: Offline DPKT/Scapy Mode)
+INFO 2026-11-10 12:39:49,308 network_collector NetworkCollector: importing C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:39:49,862 network_collector NetworkCollector: stored 5 packet events from C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:39:49,872 network_collector NetworkCollector: C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap already processed (hash match)
+INFO 2026-11-10 12:39:49,891 usb_collector USBCollector: win32evtlog available
+WARNING 2026-11-10 12:39:49,959 file_collector SHA-256 failed for non_existent_file_xyz_123.tmp: [Errno 2] No such file or directory: 'non_existent_file_xyz_123.tmp'
+INFO 2026-11-10 12:39:50,144 file_collector FileCollector: created watch directory C:\Users\Aman\AppData\Local\Temp\tmprdat5xf2\test_data\watched_downloads
+INFO 2026-11-10 12:39:50,145 file_collector FileCollector: watching C:\Users\Aman\AppData\Local\Temp\tmprdat5xf2\test_data\watched_downloads
+WARNING 2026-11-10 12:39:50,165 network_collector dpkt: cannot read C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_empty.pcap: invalid pcapng header
+WARNING 2026-11-10 12:39:50,173 network_collector dpkt: error during packet reading in C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_malformed.pcap: got 8, 16 needed at least
+WARNING 2026-11-10 12:39:50,187 normalizer normalize_timestamp: cannot parse 'invalid-date-string-123' — preserving integrity, not fabricating
+WARNING 2026-11-10 12:39:50,187 normalizer normalize_timestamp: cannot parse '' — preserving integrity, not fabricating
+WARNING 2026-11-10 12:39:50,225 validator validate_event: missing required field 'event_timestamp'
+WARNING 2026-11-10 12:39:50,229 validator validate_event: missing required field 'collector_name'
+INFO 2026-11-10 12:40:38,250 file_collector FileCollector: created watch directory C:\Users\Aman\AppData\Local\Temp\tmplmc5zcv3\test_data\watched_downloads
+INFO 2026-11-10 12:40:38,251 file_collector FileCollector: watching C:\Users\Aman\AppData\Local\Temp\tmplmc5zcv3\test_data\watched_downloads
+INFO 2026-11-10 12:40:38,370 file_collector FileCollector: recorded apk_file_observed for harmless.apk
+ERROR 2026-11-10 12:40:38,945 log Internal Server Error: /reports/
+Traceback (most recent call last):
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\core\handlers\base.py", line 199, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\dashboard\views.py", line 241, in reports
+    return render(request, 'dashboard/reports.html', {
+        'counts': counts, 'total': total, 'event_types': EVENT_TYPES, 'page_name': 'reports',
+    })
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\shortcuts.py", line 27, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\engine.py", line 186, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 157, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 199, in compile_nodelist
+    nodelist = parser.parse()
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 602, in parse
+    raise self.error(token, e)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 600, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader_tags.py", line 307, in do_extends
+    nodelist = parser.parse()
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 602, in parse
+    raise self.error(token, e)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 600, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\loader_tags.py", line 235, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 602, in parse
+    raise self.error(token, e)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 600, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\defaulttags.py", line 894, in do_for
+    nodelist_loop = parser.parse(
+        (
+    ...<2 lines>...
+        )
+    )
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 556, in parse
+    raise self.error(token, e)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 554, in parse
+    filter_expression = self.compile_filter(token.contents)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 693, in compile_filter
+    return FilterExpression(token, self)
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 789, in __init__
+    self.args_check(filter_name, filter_func, args)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\.venv\Lib\site-packages\django\template\base.py", line 851, in args_check
+    raise TemplateSyntaxError(
+        "%s requires %d arguments, %d provided" % (name, alen - dlen, plen)
+    )
+django.template.exceptions.TemplateSyntaxError: Template: C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\dashboard\templates\dashboard\reports.html, default requires 2 arguments, 1 provided
+INFO 2026-11-10 12:40:40,554 network_collector NetworkCollector: initialized (TShark: Offline DPKT/Scapy Mode)
+INFO 2026-11-10 12:40:40,555 network_collector NetworkCollector: importing C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:40:41,142 network_collector NetworkCollector: stored 5 packet events from C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:40:41,153 network_collector NetworkCollector: C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap already processed (hash match)
+INFO 2026-11-10 12:40:41,175 usb_collector USBCollector: win32evtlog available
+WARNING 2026-11-10 12:40:41,325 file_collector SHA-256 failed for non_existent_file_xyz_123.tmp: [Errno 2] No such file or directory: 'non_existent_file_xyz_123.tmp'
+INFO 2026-11-10 12:40:41,452 file_collector FileCollector: created watch directory C:\Users\Aman\AppData\Local\Temp\tmplpsggo6f\test_data\watched_downloads
+INFO 2026-11-10 12:40:41,452 file_collector FileCollector: watching C:\Users\Aman\AppData\Local\Temp\tmplpsggo6f\test_data\watched_downloads
+WARNING 2026-11-10 12:40:41,476 network_collector dpkt: cannot read C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_empty.pcap: invalid pcapng header
+WARNING 2026-11-10 12:40:41,484 network_collector dpkt: error during packet reading in C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_malformed.pcap: got 8, 16 needed at least
+WARNING 2026-11-10 12:40:41,499 normalizer normalize_timestamp: cannot parse 'invalid-date-string-123' — preserving integrity, not fabricating
+WARNING 2026-11-10 12:40:41,499 normalizer normalize_timestamp: cannot parse '' — preserving integrity, not fabricating
+WARNING 2026-11-10 12:40:41,537 validator validate_event: missing required field 'event_timestamp'
+WARNING 2026-11-10 12:40:41,542 validator validate_event: missing required field 'collector_name'
+INFO 2026-11-10 12:41:37,670 file_collector FileCollector: created watch directory C:\Users\Aman\AppData\Local\Temp\tmpd8lcj3r_\test_data\watched_downloads
+INFO 2026-11-10 12:41:37,670 file_collector FileCollector: watching C:\Users\Aman\AppData\Local\Temp\tmpd8lcj3r_\test_data\watched_downloads
+INFO 2026-11-10 12:41:37,853 file_collector FileCollector: recorded apk_file_observed for harmless.apk
+INFO 2026-11-10 12:41:38,411 network_collector NetworkCollector: initialized (TShark: Offline DPKT/Scapy Mode)
+INFO 2026-11-10 12:41:38,412 network_collector NetworkCollector: importing C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:41:38,894 network_collector NetworkCollector: stored 5 packet events from C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:41:38,904 network_collector NetworkCollector: C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap already processed (hash match)
+INFO 2026-11-10 12:41:38,988 usb_collector USBCollector: win32evtlog available
+WARNING 2026-11-10 12:41:39,073 file_collector SHA-256 failed for non_existent_file_xyz_123.tmp: [Errno 2] No such file or directory: 'non_existent_file_xyz_123.tmp'
+INFO 2026-11-10 12:41:39,229 file_collector FileCollector: created watch directory C:\Users\Aman\AppData\Local\Temp\tmpg1umz6iw\test_data\watched_downloads
+INFO 2026-11-10 12:41:39,230 file_collector FileCollector: watching C:\Users\Aman\AppData\Local\Temp\tmpg1umz6iw\test_data\watched_downloads
+WARNING 2026-11-10 12:41:39,251 network_collector dpkt: cannot read C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_empty.pcap: invalid pcapng header
+WARNING 2026-11-10 12:41:39,259 network_collector dpkt: error during packet reading in C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_malformed.pcap: got 8, 16 needed at least
+WARNING 2026-11-10 12:41:39,272 normalizer normalize_timestamp: cannot parse 'invalid-date-string-123' — preserving integrity, not fabricating
+WARNING 2026-11-10 12:41:39,273 normalizer normalize_timestamp: cannot parse '' — preserving integrity, not fabricating
+WARNING 2026-11-10 12:41:39,311 validator validate_event: missing required field 'event_timestamp'
+WARNING 2026-11-10 12:41:39,316 validator validate_event: missing required field 'collector_name'
+INFO 2026-11-10 12:42:03,845 network_collector NetworkCollector: initialized (TShark: Offline DPKT/Scapy Mode)
+INFO 2026-11-10 12:42:03,847 network_collector NetworkCollector: importing C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:42:04,534 network_collector NetworkCollector: stored 5 packet events from C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:47:19,466 file_collector FileCollector: created watch directory C:\Users\Aman\AppData\Local\Temp\tmpt43gnd_c\test_data\watched_downloads
+INFO 2026-11-10 12:47:19,466 file_collector FileCollector: watching C:\Users\Aman\AppData\Local\Temp\tmpt43gnd_c\test_data\watched_downloads
+INFO 2026-11-10 12:47:19,577 file_collector FileCollector: recorded apk_file_observed for harmless.apk
+INFO 2026-11-10 12:47:19,818 network_collector NetworkCollector: initialized (TShark: Offline DPKT/Scapy Mode)
+INFO 2026-11-10 12:47:19,819 network_collector NetworkCollector: importing C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:47:20,087 network_collector NetworkCollector: stored 5 packet events from C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap
+INFO 2026-11-10 12:47:20,094 network_collector NetworkCollector: C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_traffic.pcap already processed (hash match)
+INFO 2026-11-10 12:47:20,102 usb_collector USBCollector: win32evtlog available
+WARNING 2026-11-10 12:47:20,139 file_collector SHA-256 failed for non_existent_file_xyz_123.tmp: [Errno 2] No such file or directory: 'non_existent_file_xyz_123.tmp'
+INFO 2026-11-10 12:47:20,254 file_collector FileCollector: created watch directory C:\Users\Aman\AppData\Local\Temp\tmpl0_3v06v\test_data\watched_downloads
+INFO 2026-11-10 12:47:20,254 file_collector FileCollector: watching C:\Users\Aman\AppData\Local\Temp\tmpl0_3v06v\test_data\watched_downloads
+WARNING 2026-11-10 12:47:20,264 network_collector dpkt: cannot read C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_empty.pcap: invalid pcapng header
+WARNING 2026-11-10 12:47:20,268 network_collector dpkt: error during packet reading in C:\Users\Aman\Desktop\Digital forensic\Network-Log-Intelligence\test_data\network_samples\sample_malformed.pcap: got 8, 16 needed at least
+WARNING 2026-11-10 12:47:20,276 normalizer normalize_timestamp: cannot parse 'invalid-date-string-123' — preserving integrity, not fabricating
+WARNING 2026-11-10 12:47:20,276 normalizer normalize_timestamp: cannot parse '' — preserving integrity, not fabricating
+WARNING 2026-11-10 12:47:20,295 validator validate_event: missing required field 'event_timestamp'
+WARNING 2026-11-10 12:47:20,297 validator validate_event: missing required field 'collector_name'

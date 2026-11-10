@@ -21,10 +21,12 @@ USB_INSTALL_IDS = {20001, 20003}        # Driver installed
 def _extract_vid_pid(hardware_id_str: str):
     """Extract VID/PID from hardware ID string like VID_05AC&PID_12A0."""
     vid, pid = '', ''
-    m = re.search(r'VID_([0-9A-Fa-f]{4})', hardware_id_str)
+    if not hardware_id_str:
+        return vid, pid
+    m = re.search(r'VID_([0-9A-Fa-f]{4})', hardware_id_str, re.IGNORECASE)
     if m:
         vid = m.group(1).upper()
-    m = re.search(r'PID_([0-9A-Fa-f]{4})', hardware_id_str)
+    m = re.search(r'PID_([0-9A-Fa-f]{4})', hardware_id_str, re.IGNORECASE)
     if m:
         pid = m.group(1).upper()
     return vid, pid
